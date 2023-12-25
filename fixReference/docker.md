@@ -35,3 +35,20 @@ Docker의 기본 네트워크를 사용할 때, 컨테이너 간의 연결이 �
           echo "drcal-network already exists"
         fi
 ```
+
+## 2. EC2 인스턴스에서 sudo 커맨드와 Docker Hub username 환경변수와의 관련성
+<hr>
+Github Actions통해 CI/CD를 적용하던 중, 쉘 스크립트에 sudo 커맨드를 사용할 경우 Secrets에 등록된 환경변수를 인식하지 못하는 이슈가 발생했다.
+
+이를 해결하기 위해선 ec2 유저(ubuntu)가 root 권한 없이도 docker 커맨드를 쓸 수 있도록 권한을 수정해 줘야 한다.
+
+``` shell
+srw-rw----  1 root    docker     0 Nov  8 14:44 docker.sock
+```
+
+위의 정보를 보면, docker.sock 소켓의 소유자는 root, 그룹은 docker 이다. 이때, 이 소켓 파일의 위치는 /var/run/ 경로에 있다. 제3자 유저(ubuntu)가 사용할 수 있도록 docker.sock 파일의 권한을 아래와 같이 수정했다:
+``` shell
+sudo chmod 666 ./docker.sock
+```
+
+권한 변경 후 sudo 없이 docker ps 커맨드를 날리니 정상 작동한다. 이후 Github Actions의 CI/CD 스크립트를 모두 sudo 커맨드를 빼도록 수정한 뒤 다시 테스트해 봤더니 파이프라인이 정상적으로 수행됐다.
