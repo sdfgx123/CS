@@ -1,6 +1,7 @@
 # Docker Fix 레퍼런스
 
 ## 1. WAS 컨테이너와 Redis 컨테이너를 연결하면서 겪은 이슈
+<hr>
 WAS(Spring Boot)와 Redis 컨테이너 사이에 Connection이 안돼서 해결하느라 애를 먹었다. 결론부터 얘기하자면, application.yml의 spring.redis.host에 Redis 컨테이너의 이름을 넣어줘야 WAS에서 Redis 컨테이너를 정상적으로 인식한다.
 
 나는 host를 localhost -> drcal-network(Custom create한 네트워크 이름) -> Connection 문제 아닌 줄 알고 Redis 호출 메서드에 StackTrace 추가 -> test-redis(Redis 컨테이너 이름) 과정을 거쳐서 해결했다.

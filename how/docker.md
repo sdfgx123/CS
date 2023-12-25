@@ -1,7 +1,7 @@
 # Docker 사용법
 
 ## 1. Docker Container WAS 로그를 보려면?
-EC2 인스턴스에서 Docker 컨테이너를 사용하여 WAS를 실행할 경우 로그 보는 방법
+ Docker 컨테이너를 사용하여 WAS를 실행할 경우 로그 보는 방법
 ``` shell
 docker logs {Container ID or Container name}
 ```
